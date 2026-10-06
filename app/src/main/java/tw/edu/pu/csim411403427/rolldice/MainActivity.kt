@@ -4,13 +4,28 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import tw.edu.pu.csim411403427.rolldice.ui.theme.RollDiceTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,8 +35,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             RollDiceTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+                    Dice(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -31,17 +45,56 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
+fun Dice(modifier: Modifier = Modifier) {
+    // 紀錄目前的點數索引（0 代表預設/重置圖 dice0）
+    var diceNumber by remember { mutableIntStateOf(0) }
+
+    // 骰子圖片資源陣列，索引 0 ~ 6 分別對應 dice0 到 dice6
+    val diceImages = listOf(
+        R.drawable.dice0,
+        R.drawable.dice1,
+        R.drawable.dice2,
+        R.drawable.dice3,
+        R.drawable.dice4,
+        R.drawable.dice5,
+        R.drawable.dice6
     )
+
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "請點擊圖片隨機丟骰子\n（雙擊可重置）\n作者：陳冠宇",
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Image(
+            painter = painterResource(id = diceImages[diceNumber]),
+            contentDescription = "Dice",
+            modifier = Modifier.pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+                        // 單擊：產生 1 到 6 的隨機整數
+                        diceNumber = (1..6).random()
+                    },
+                    onDoubleTap = {
+                        // 雙擊：重置為 0 (回到 dice0)
+                        diceNumber = 0
+                    }
+                )
+            }
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun DicePreview() {
     RollDiceTheme {
-        Greeting("Android")
+        Dice()
     }
 }
