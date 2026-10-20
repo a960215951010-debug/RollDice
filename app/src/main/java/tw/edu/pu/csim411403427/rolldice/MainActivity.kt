@@ -68,7 +68,7 @@ fun Dice(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "請點擊圖片隨機丟骰子\n（雙擊可重置）\n作者：陳冠宇",
+            text = "請點擊圖片隨機丟骰子\n（雙擊可重置，長按點數變6）\n作者：陳冠宇",
             textAlign = TextAlign.Center
         )
 
@@ -86,6 +86,10 @@ fun Dice(modifier: Modifier = Modifier) {
                     onDoubleTap = {
                         // 雙擊：重置為 0 (回到 dice0)
                         diceNumber = 0
+                    },
+                    onLongPress = {
+                        // 長按：點數變為 6
+                        diceNumber = 6
                     }
                 )
             }
