@@ -61,6 +61,7 @@ fun Dice(modifier: Modifier = Modifier) {
         R.drawable.dice6
     )
 
+
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
