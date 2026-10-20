@@ -46,6 +46,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Dice(modifier: Modifier = Modifier) {
+
     // 紀錄目前的點數索引（0 代表預設/重置圖 dice0）
     var diceNumber by remember { mutableIntStateOf(0) }
 
